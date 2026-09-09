@@ -1,0 +1,8 @@
+[
+  { "name": "Choco Suprême", "type": "Chocolat", "calories": 250, "sugar_g": 25, "rating": 4.8 },
+  { "name": "Fraise Douceur", "type": "Fruit", "calories": 180, "sugar_g": 18, "rating": 4.2 },
+  { "name": "Noisette Craquante", "type": "Noix", "calories": 220, "sugar_g": 15, "rating": 4.5 },
+  { "name": "Tout Choco", "type": "Chocolat", "calories": 280, "sugar_g": 30, "rating": 4.9 },
+  { "name": "Pomme Cannelle", "type": "Fruit", "calories": 160, "sugar_g": 14, "rating": 3.9 },
+  { "name": "Macadamia Blanc", "type": "Noix", "calories": 260, "sugar_g": 22, "rating": 4.7 }
+]
