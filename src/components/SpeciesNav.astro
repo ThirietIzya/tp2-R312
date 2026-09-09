@@ -1,0 +1,37 @@
+---
+interface Props {
+  current?: 'Adelie' | 'Gentoo' | 'Chinstrap' | 'all' | string;
+}
+
+const { current } = Astro.props;
+
+const speciesLinks = [
+  { id: 'all', label: '🎡 Vue Slider (Tout-en-un)', href: '/species' },
+  { id: 'Adelie', label: 'Adelie', href: '/species/Adelie', color: 'text-amber-700 hover:bg-amber-100' },
+  { id: 'Gentoo', label: 'Gentoo', href: '/species/Gentoo', color: 'text-sky-700 hover:bg-sky-100' },
+  { id: 'Chinstrap', label: 'Chinstrap', href: '/species/Chinstrap', color: 'text-purple-700 hover:bg-purple-100' },
+];
+---
+
+<div class="w-full flex flex-wrap items-center justify-center gap-2 my-4 p-2 bg-white/60 rounded-2xl border border-pink-200">
+  <span class="text-xs font-bold text-pink-900 uppercase tracking-wider px-2">Navigation Espèces :</span>
+  <div class="flex flex-wrap items-center gap-1.5">
+    {speciesLinks.map((item) => {
+      const isCurrent = current?.toLowerCase() === item.id.toLowerCase();
+      return (
+        <a
+          href={item.href}
+          class:list={[
+            "px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 border",
+            isCurrent
+              ? "bg-pink-600 text-white border-pink-700 shadow-sm"
+              : "bg-white text-slate-700 border-pink-200 hover:bg-pink-50 hover:text-pink-900"
+          ]}
+        >
+          {item.label}
+        </a>
+      );
+    })}
+  </div>
+</div>
+

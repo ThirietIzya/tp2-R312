@@ -1,76 +1,79 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import PlotFigure from '../components/PlotFigure.astro';
-import Menu from '../components/menu.astro';
-import Footer from '../components/footer.astro';
+import GraphNavigation from '../components/GraphNavigation.astro';
 import * as Plot from "@observablehq/plot";
 import penguins from '../data/penguins.json';
 
-// Graphique 1 : Nuage de points
+// Graphique 1 : Nuage de points global
 const penguinsChartOptions = {
   title: "Longueur des nageoires vs Masse corporelle",
-  subtitle: "Données de la station Palmer",
+  subtitle: "Comparaison globale de toutes les espèces de la station Palmer",
   caption: "Figure 1. Nuage de points des manchots par espèce.",
   ariaLabel: "Nuage de points représentant la masse corporelle en fonction de la taille des nageoires",
   grid: true,
-  x: { label: "Nageoire (mm)" },
-  y: { label: "Masse (g)" },
-  color: { legend: true },
+  inset: 10,
+  width: 760,
+  height: 420,
+  marginLeft: 60,
+  marginBottom: 45,
+  x: { label: "Longueur des nageoires (mm) →" },
+  y: { label: "↑ Masse corporelle (g)" },
+  color: { 
+    legend: true,
+    domain: ["Adelie", "Chinstrap", "Gentoo"],
+    range: ["#ea580c", "#9333ea", "#0284c7"]
+  },
   marks: [
-    Plot.dot(penguins, { x: "flipper_length_mm", y: "body_mass_g", stroke: "species" })
+    Plot.dot(penguins, { 
+      x: "flipper_length_mm", 
+      y: "body_mass_g", 
+      fill: "species",
+      stroke: "#ffffff",
+      strokeWidth: 1.2,
+      r: 5.5,
+      fillOpacity: 0.85,
+      title: (d) => `Espèce: ${d.species}\nÎle: ${d.island}\nNageoire: ${d.flipper_length_mm}mm\nMasse: ${d.body_mass_g}g`
+    })
   ]
 };
-
 ---
 
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>TP Astro - Observable Plot</title>
-  </head>
-  <body id="top" style="max-width: 800px; margin: 2rem auto; font-family: sans-serif;">
-    <Menu />
-    <h1>Visualisation de données avec Observable Plot & Astro</h1>
+<Layout title="Visualisation de données - Manchots Palmer (TP2)" activeTab="home">
+  <div class="space-y-8">
+    <!-- En-tête -->
+    <div class="text-center space-y-3">
+      <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 border border-pink-300 rounded-full text-xs font-bold uppercase tracking-wider">
+        Graphique 1
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Visualisation des données <span class="text-pink-600">Palmer</span>
+      </h1>
+      <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+        Exploration interactive de la morphologie des manchots de l'archipel Palmer avec Observable Plot et Astro.
+      </p>
+    </div>
 
-    <section id="penguins-scatter">
-      <h2>Graphique 1 : Manchots (Scatter Plot)</h2>
-      <figure>
+    <!-- Carte du Graphique -->
+    <section id="penguins-scatter" class="rounded-3xl border-2 border-pink-200 bg-white/95 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-pink-100">
+        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">
+          Graphique 1 : Nuage de points multi-espèces
+        </h2>
+        <span class="text-xs font-semibold text-slate-500 bg-pink-50 px-2.5 py-1 rounded-full border border-pink-200">
+          Scatter Plot
+        </span>
+      </div>
+
+      <figure class="plot-figure-container flex justify-center items-center overflow-x-auto">
         <PlotFigure options={penguinsChartOptions} />
       </figure>
     </section>
 
-    <nav class="new-graphs" aria-label="Accéder aux nouveaux graphiques">
-      <a href="/graphique-2">Graphique 2</a>
-      <a href="/graphique">Graphique 3</a>
-      <a href="/graphique-4">Graphique 4</a>
-    </nav>
-
-    <Footer />
-  </body>
-</html>
-
-<style>
-  .new-graphs {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 2rem 0;
-  }
-
-  .new-graphs a {
-    padding: 0.4rem 0.75rem;
-    border: 2px solid #d94a8c;
-    border-radius: 999px;
-    background: linear-gradient(180deg, #ffb7d0 0%, #f091b8 100%);
-    color: #3a001e;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .new-graphs a:hover,
-  .new-graphs a:focus-visible {
-    background: linear-gradient(180deg, #f3a9c7 0%, #e76ea2 100%);
-  }
-</style>
+    <!-- Navigation entre les 4 graphiques -->
+    <div class="text-center space-y-2">
+      <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Voir les autres graphiques :</span>
+      <GraphNavigation current={1} />
+    </div>
+  </div>
+</Layout>

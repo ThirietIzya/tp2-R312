@@ -1,45 +1,123 @@
 ---
-import penguins from '../data/penguins.json';
+import * as Plot from "@observablehq/plot";
+import { JSDOM } from "jsdom";
+import penguins from "../data/penguins.json";
+
+interface Props {
+  species: 'Adelie' | 'Gentoo' | 'Chinstrap' | string;
+}
 
 const { species } = Astro.props;
 
-const filteredPenguins = penguins.filter(p => p.species === species);
+// Filtrage des pingouins par espèce selon la consigne
+const filteredPenguins = penguins.filter(({ species: s }) => s === species);
+
+// Données valides avec masse et nageoires
+const validData = filteredPenguins.filter(
+  (p) => p.flipper_length_mm !== null && p.body_mass_g !== null
+);
+
+// Statistiques descriptives
+const count = filteredPenguins.length;
+const avgMass = Math.round(
+  validData.reduce((acc, curr) => acc + (curr.body_mass_g ?? 0), 0) / (validData.length || 1)
+);
+const avgFlipper = Math.round(
+  validData.reduce((acc, curr) => acc + (curr.flipper_length_mm ?? 0), 0) / (validData.length || 1)
+);
+const islands = [...new Set(filteredPenguins.map((p) => p.island))].join(', ');
+
+// Palette chromatique spécifique par espèce
+const speciesTheme: Record<string, { fill: string; stroke: string; bg: string; badge: string }> = {
+  Adelie: {
+    fill: "#ea580c",
+    stroke: "#c2410c",
+    bg: "bg-orange-50/60 border-orange-200",
+    badge: "bg-orange-100 text-orange-800 border-orange-300"
+  },
+  Gentoo: {
+    fill: "#0284c7",
+    stroke: "#0369a1",
+    bg: "bg-sky-50/60 border-sky-200",
+    badge: "bg-sky-100 text-sky-800 border-sky-300"
+  },
+  Chinstrap: {
+    fill: "#9333ea",
+    stroke: "#7e22ce",
+    bg: "bg-purple-50/60 border-purple-200",
+    badge: "bg-purple-100 text-purple-800 border-purple-300"
+  }
+};
+
+const theme = speciesTheme[species] ?? {
+  fill: "#d81b60",
+  stroke: "#be185d",
+  bg: "bg-pink-50/60 border-pink-200",
+  badge: "bg-pink-100 text-pink-800 border-pink-300"
+};
+
+// Génération du graphique Plot avec JSDOM côté serveur (SSR instantané)
+const plot = Plot.plot({
+  document: new JSDOM("").window.document,
+  title: `Morphologie des manchots ${species}`,
+  subtitle: "Masse corporelle (g) vs Longueur des nageoires (mm)",
+  caption: `Figure : ${count} individus observés aux îles ${islands}.`,
+  ariaLabel: `Nuage de points de l'espèce ${species}`,
+  grid: true,
+  inset: 12,
+  width: 720,
+  height: 380,
+  marginLeft: 60,
+  marginBottom: 45,
+  x: { label: "Longueur des nageoires (mm) →", nice: true },
+  y: { label: "↑ Masse corporelle (g)", nice: true },
+  marks: [
+    Plot.linearRegressionY(validData, {
+      x: "flipper_length_mm",
+      y: "body_mass_g",
+      stroke: theme.stroke,
+      strokeOpacity: 0.5,
+      strokeWidth: 2
+    }),
+    Plot.dot(validData, {
+      x: "flipper_length_mm",
+      y: "body_mass_g",
+      fill: theme.fill,
+      stroke: "#ffffff",
+      strokeWidth: 1.5,
+      r: 6,
+      fillOpacity: 0.85,
+      title: (d) => `Espèce : ${d.species}\nÎle : ${d.island}\nSexe : ${d.sex || 'Non renseigné'}\nNageoire : ${d.flipper_length_mm} mm\nMasse : ${d.body_mass_g} g`
+    })
+  ]
+});
 ---
 
-<div class="my-8">
-  <h2>Graphique de l'espèce : {species}</h2>
-  
-  <!-- 4. ASTUCE : On stocke les données dans les attributs "data-species" et "data-penguins" -->
-  <div 
-    class="plot-container" 
-    data-species={species} 
-    data-penguins={JSON.stringify(filteredPenguins)}
-  ></div>
+<div class={`rounded-3xl border-2 p-6 sm:p-8 bg-white/95 shadow-sm transition-all duration-300 ${theme.bg}`}>
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-pink-100 pb-4">
+    <div>
+      <span class={`inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border ${theme.badge} mb-2`}>
+        Espèce : {species}
+      </span>
+      <h3 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+        Visualisation morphologique ({species})
+      </h3>
+    </div>
+
+    <!-- Mini statistiques -->
+    <div class="flex flex-wrap gap-2 text-xs">
+      <div class="bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-slate-500 font-medium">Individus :</span> <strong class="text-slate-900">{count}</strong>
+      </div>
+      <div class="bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-slate-500 font-medium">Masse moy. :</span> <strong class="text-slate-900">{avgMass} g</strong>
+      </div>
+      <div class="bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-slate-500 font-medium">Nageoire moy. :</span> <strong class="text-slate-900">{avgFlipper} mm</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphique SVG Observable Plot -->
+  <div class="plot-container flex justify-center items-center overflow-x-auto" set:html={plot.outerHTML} />
 </div>
-
-<!-- 5. Script normal (Astro va automatiquement en faire un module) -->
-<script>
-  import * as Plot from '@observablehq/plot';
-
-  const containers = document.querySelectorAll<HTMLElement>('.plot-container');
-
-  containers.forEach((container) => {
-    const species = container.dataset.species ?? 'inconnu';
-    const penguinsData = JSON.parse(container.dataset.penguins ?? '[]') as Array<Record<string, number | string | null>>;
-
-    console.log(`Données chargées pour ${species}:`, penguinsData);
-
-    const chart = Plot.plot({
-      marginLeft: 50,
-      marks: [
-        Plot.dot(penguinsData, {
-          x: 'flipper_length_mm',
-          y: 'body_mass_g',
-          fill: 'orange'
-        })
-      ]
-    });
-
-    container.append(chart);
-  });
-</script>

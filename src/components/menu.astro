@@ -1,95 +1,76 @@
 ---
-const { active } = Astro.props;
-const currentPath = Astro.url.pathname;
+interface Props {
+  active?: string;
+}
 
-const tabs = [
-  { id: "home", label: "Accueil", href: "/" },
-  { id: "graphique2", label: "Graphique 2", href: "/graphique-2" },
-  { id: "graphique3", label: "Graphique 3", href: "/graphique" },
-  { id: "graphique4", label: "Graphique 4", href: "/graphique-4" },
-  { id: "species", label: "Trie par Especes", href: "/species" },
-  { id: "adelie", label: "Adelie", href: "/species/Adelie" },
-  { id: "gentoo", label: "Gentoo", href: "/species/Gentoo" },
-  { id: "chinstrap", label: "Chinstrap", href: "/species/Chinstrap" },
-  { id: "cookies", label: "Cookies", href: "/cookies" },
+const { active } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+
+const navSections = [
+  {
+    title: "Graphiques Généraux",
+    items: [
+      { id: "home", label: "Accueil", href: "/" },
+      { id: "graphique2", label: "G2 (Barres)", href: "/graphique-2" },
+      { id: "graphique3", label: "G3 (Histogramme)", href: "/graphique" },
+      { id: "graphique4", label: "G4 (Boîtes)", href: "/graphique-4" },
+    ]
+  },
+  {
+    title: "Par Espèces",
+    items: [
+      { id: "species", label: "Slider Espèces", href: "/species" },
+      { id: "adelie", label: "Adelie", href: "/species/Adelie" },
+      { id: "gentoo", label: "Gentoo", href: "/species/Gentoo" },
+      { id: "chinstrap", label: "Chinstrap", href: "/species/Chinstrap" },
+    ]
+  },
+  {
+    title: "Extra",
+    items: [
+      { id: "cookies", label: "🍪 Cookies", href: "/cookies" },
+    ]
+  }
 ];
+
+const checkActive = (itemHref: string, itemId: string) => {
+  if (active) return active === itemId;
+  const normalizedItemHref = itemHref.replace(/\/$/, "");
+  if (normalizedItemHref === "" && currentPath === "") return true;
+  return normalizedItemHref !== "" && currentPath.toLowerCase() === normalizedItemHref.toLowerCase();
+};
 ---
 
-<nav class="pink-nav" aria-label="Navigation principale">
-  <ul class="pink-nav__list" role="list">
-    {
-      tabs.map((tab) => {
-        const isActive = tab.id === active || (!active && tab.href === currentPath);
-        return (
-          <li class:list={['pink-nav__item', isActive && 'is-active']}>
-            <a href={tab.href} class="pink-nav__link">{tab.label}</a>
-          </li>
-        );
-      })
-    }
-  </ul>
+<nav class="w-full max-w-5xl mx-auto mb-4 bg-pink-100/70 backdrop-blur-sm border-2 border-pink-300/80 rounded-3xl p-3 sm:p-4 shadow-sm" aria-label="Navigation principale">
+  <div class="flex flex-wrap items-center justify-between gap-3 px-2">
+    <!-- Logo / Brand -->
+    <a href="/" class="flex items-center gap-2 text-pink-900 font-extrabold text-lg sm:text-xl tracking-tight hover:opacity-80 transition-opacity">
+      <img src="/image_manchot_menu.png" alt="Logo Manchot" class="w-7 h-7 object-contain" />
+      <span>Palmer <span class="text-pink-600 font-black">Data</span></span>
+    </a>
+
+    <!-- Navigation links grouped -->
+    <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+      {
+        navSections.flatMap((sec) => sec.items).map((tab) => {
+          const isActive = checkActive(tab.href, tab.id);
+          return (
+            <a
+              href={tab.href}
+              class:list={[
+                "inline-flex items-center justify-center px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border",
+                isActive
+                  ? "bg-pink-600 text-white border-pink-700 shadow-md shadow-pink-500/20 scale-[1.02]"
+                  : "bg-white/80 text-pink-950 border-pink-200/90 hover:bg-pink-200/60 hover:border-pink-300 hover:text-pink-900"
+              ]}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {tab.label}
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
 </nav>
 
-<style>
-  .pink-nav {
-    width: min(1100px, calc(100% - 1.5rem));
-    margin: 0 auto 1rem;
-    padding: 1rem 1.2rem;
-    background: #f4dfe7;
-    border: 2px solid #ef9bb6;
-    border-radius: 28px;
-  }
-
-  .pink-nav__list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.8rem 0.9rem;
-    margin: 0;
-    padding: 0;
-  }
-
-  .pink-nav__item {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .pink-nav__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2.7rem;
-    padding: 0.45rem 1rem;
-    border-radius: 999px;
-    background: linear-gradient(180deg, #f9d6e5 0%, #f2bfd4 100%);
-    border: 2px solid #ee9db7;
-    color: #1d1d1d;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.2;
-    transition: none;
-  }
-
-  .pink-nav__item.is-active .pink-nav__link {
-    background: linear-gradient(180deg, #f9dfe9 0%, #f4c3d5 100%);
-    border-color: #df7096;
-  }
-
-  @media (max-width: 720px) {
-    .pink-nav {
-      padding: 0.8rem;
-    }
-
-    .pink-nav__list {
-      gap: 0.6rem 0.7rem;
-    }
-
-    .pink-nav__link {
-      font-size: 0.9rem;
-      padding: 0.45rem 0.8rem;
-    }
-  }
-</style>

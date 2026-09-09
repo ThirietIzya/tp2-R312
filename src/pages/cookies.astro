@@ -1,87 +1,77 @@
 ---
-import Menu from '../components/menu.astro';
-import Footer from '../components/footer.astro';
+import Layout from '../layouts/Layout.astro';
 import GraphicCookies from '../components/GraphicCookies.astro';
+import cookies from '../data/cookies.json';
+
+const categories = [
+  { id: 'chocolat', name: 'Chocolat', emoji: '🍫', count: cookies.filter(c => c.type === 'Chocolat').length },
+  { id: 'fruit', name: 'Fruit', emoji: '🍓', count: cookies.filter(c => c.type === 'Fruit').length },
+  { id: 'noix', name: 'Noix', emoji: '🌰', count: cookies.filter(c => c.type === 'Noix').length },
+  { id: 'avoine', name: 'Avoine', emoji: '🌾', count: cookies.filter(c => c.type === 'Avoine').length },
+];
 ---
 
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Les cookies</title>
-  </head>
-  <body>
-    <main class="species-shell">
-      <Menu />
+<Layout title="Analyse Nutritionnelle des Cookies - Données filtrées" activeTab="cookies">
+  <div class="space-y-10">
+    <!-- En-tête -->
+    <div class="text-center space-y-3">
+      <span class="inline-block px-3 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-black uppercase tracking-wider">
+        Base de données filtrée
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Le Coin des <span class="text-pink-600">Gourmands 🍪</span>
+      </h1>
+      <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+        Explorez nos <strong>{cookies.length} recettes de cookies</strong> filtrées par catégories (Chocolat, Fruit, Noix, Avoine). Comparez leurs apports en calories, sucre et matières grasses.
+      </p>
+    </div>
 
-      <div class="species-header">
-        <h1 class="species-title">Le coin des gourmands</h1>
-        <h2 class="species-subtitle">Analyse nutritionnelle des cookies</h2>
-      </div>
+    <!-- Filtres rapides par catégories -->
+    <div class="sticky top-4 z-20 flex justify-center py-2">
+      <nav class="flex flex-wrap items-center justify-center gap-2 p-2 bg-white/90 backdrop-blur-md rounded-full border-2 border-pink-300 shadow-md" aria-label="Filtres catégories cookies">
+        <a
+          href="#vue-globale"
+          class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold border border-pink-200 bg-pink-50 text-pink-950 hover:bg-pink-100 transition-all shadow-xs"
+        >
+          <span>✨</span>
+          <span>Vue Globale ({cookies.length})</span>
+        </a>
+        {categories.map((cat) => (
+          <a
+            href={`#${cat.id}`}
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-white text-slate-700 hover:bg-pink-50 hover:text-pink-900 hover:border-pink-300 transition-all shadow-xs"
+          >
+            <span>{cat.emoji}</span>
+            <span>{cat.name} ({cat.count})</span>
+          </a>
+        ))}
+      </nav>
+    </div>
 
-      <section class="species-panel">
-        <GraphicCookies />
-      </section>
+    <!-- 1. Vue globale avec toutes les recettes -->
+    <section id="vue-globale" class="scroll-mt-24 space-y-3">
+      <GraphicCookies type="all" title="Comparaison Globale de toutes les Recettes" />
+    </section>
 
-      <Footer />
-    </main>
-  </body>
-</html>
+    <!-- 2. Section filtrée : Chocolat -->
+    <section id="chocolat" class="scroll-mt-24 space-y-3">
+      <GraphicCookies type="Chocolat" title="🍫 Sélection Spéciale : Cookies au Chocolat" />
+    </section>
 
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
+    <!-- 3. Section filtrée : Fruits -->
+    <section id="fruit" class="scroll-mt-24 space-y-3">
+      <GraphicCookies type="Fruit" title="🍓 Sélection Fruité : Cookies aux Fruits & Agrumes" />
+    </section>
 
-  body {
-    margin: 0;
-    background: #f3f3f1;
-    color: #111;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-  }
+    <!-- 4. Section filtrée : Noix -->
+    <section id="noix" class="scroll-mt-24 space-y-3">
+      <GraphicCookies type="Noix" title="🌰 Sélection Croquante : Cookies aux Noix & Graines" />
+    </section>
 
-  .species-shell {
-    max-width: 1200px;
-    margin: 0 auto 3rem;
-    padding: 0 1rem;
-  }
+    <!-- 5. Section filtrée : Avoine -->
+    <section id="avoine" class="scroll-mt-24 space-y-3">
+      <GraphicCookies type="Avoine" title="🌾 Sélection Healthy : Cookies à l'Avoine & Céréales" />
+    </section>
+  </div>
+</Layout>
 
-  .species-header {
-    margin: 1.5rem 0 1.25rem;
-    text-align: center;
-  }
-
-  .species-title {
-    margin: 0;
-    font-size: clamp(2.8rem, 5vw, 5rem);
-    line-height: 0.95;
-    letter-spacing: -0.06em;
-    font-weight: 900;
-  }
-
-  .species-subtitle {
-    margin: 1.2rem 0 0;
-    font-size: clamp(1.8rem, 2.7vw, 3rem);
-    line-height: 1.15;
-    font-weight: 700;
-  }
-
-  .species-panel {
-    background: #f4dfe7;
-    border: 2px solid #ef9bb6;
-    border-radius: 30px;
-    padding: 1.5rem;
-    box-sizing: border-box;
-  }
-
-  @media (max-width: 700px) {
-    .species-shell {
-      padding: 0 0.75rem;
-    }
-
-    .species-panel {
-      padding: 1rem;
-    }
-  }
-</style>

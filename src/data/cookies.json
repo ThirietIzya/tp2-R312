@@ -1,8 +1,27 @@
 [
-  { "name": "Choco Suprême", "type": "Chocolat", "calories": 250, "sugar_g": 25, "rating": 4.8 },
-  { "name": "Fraise Douceur", "type": "Fruit", "calories": 180, "sugar_g": 18, "rating": 4.2 },
-  { "name": "Noisette Craquante", "type": "Noix", "calories": 220, "sugar_g": 15, "rating": 4.5 },
-  { "name": "Tout Choco", "type": "Chocolat", "calories": 280, "sugar_g": 30, "rating": 4.9 },
-  { "name": "Pomme Cannelle", "type": "Fruit", "calories": 160, "sugar_g": 14, "rating": 3.9 },
-  { "name": "Macadamia Blanc", "type": "Noix", "calories": 260, "sugar_g": 22, "rating": 4.7 }
+  { "name": "Choco Suprême", "type": "Chocolat", "calories": 250, "sugar_g": 25, "fat_g": 14, "rating": 4.8, "price_eur": 2.50 },
+  { "name": "Tout Choco Intense", "type": "Chocolat", "calories": 280, "sugar_g": 30, "fat_g": 16, "rating": 4.9, "price_eur": 2.80 },
+  { "name": "Choco Blanc Vanille", "type": "Chocolat", "calories": 270, "sugar_g": 32, "fat_g": 15, "rating": 4.4, "price_eur": 2.60 },
+  { "name": "Pépites Noir 70%", "type": "Chocolat", "calories": 240, "sugar_g": 20, "fat_g": 13, "rating": 4.7, "price_eur": 2.70 },
+  { "name": "Choco Caramel Fondant", "type": "Chocolat", "calories": 310, "sugar_g": 35, "fat_g": 18, "rating": 4.9, "price_eur": 3.00 },
+  { "name": "Choco Praliné", "type": "Chocolat", "calories": 290, "sugar_g": 28, "fat_g": 17, "rating": 4.6, "price_eur": 2.90 },
+
+  { "name": "Fraise Douceur", "type": "Fruit", "calories": 180, "sugar_g": 18, "fat_g": 7, "rating": 4.2, "price_eur": 2.20 },
+  { "name": "Pomme Cannelle", "type": "Fruit", "calories": 160, "sugar_g": 14, "fat_g": 6, "rating": 3.9, "price_eur": 2.00 },
+  { "name": "Framboise Pistache", "type": "Fruit", "calories": 210, "sugar_g": 21, "fat_g": 9, "rating": 4.6, "price_eur": 2.80 },
+  { "name": "Citron Pavot Meringué", "type": "Fruit", "calories": 195, "sugar_g": 22, "fat_g": 8, "rating": 4.5, "price_eur": 2.40 },
+  { "name": "Myrtille Sauvage", "type": "Fruit", "calories": 175, "sugar_g": 16, "fat_g": 7, "rating": 4.3, "price_eur": 2.30 },
+  { "name": "Banane Choco-Fruit", "type": "Fruit", "calories": 205, "sugar_g": 24, "fat_g": 8, "rating": 4.4, "price_eur": 2.50 },
+
+  { "name": "Noisette Craquante", "type": "Noix", "calories": 220, "sugar_g": 15, "fat_g": 15, "rating": 4.5, "price_eur": 2.40 },
+  { "name": "Macadamia Blanc", "type": "Noix", "calories": 260, "sugar_g": 22, "fat_g": 18, "rating": 4.7, "price_eur": 3.10 },
+  { "name": "Pécan Caramel Salé", "type": "Noix", "calories": 295, "sugar_g": 27, "fat_g": 19, "rating": 4.8, "price_eur": 3.20 },
+  { "name": "Amande Grillée Miel", "type": "Noix", "calories": 230, "sugar_g": 17, "fat_g": 16, "rating": 4.4, "price_eur": 2.60 },
+  { "name": "Pistache d'Iran", "type": "Noix", "calories": 250, "sugar_g": 19, "fat_g": 17, "rating": 4.7, "price_eur": 3.30 },
+  { "name": "Noix de Grenoble", "type": "Noix", "calories": 215, "sugar_g": 13, "fat_g": 16, "rating": 4.2, "price_eur": 2.50 },
+
+  { "name": "Flocons d'Avoine Miel", "type": "Avoine", "calories": 170, "sugar_g": 12, "fat_g": 6, "rating": 4.1, "price_eur": 1.90 },
+  { "name": "Avoine Raisins Secs", "type": "Avoine", "calories": 185, "sugar_g": 19, "fat_g": 6, "rating": 4.3, "price_eur": 2.10 },
+  { "name": "Avoine Cranberry Graine", "type": "Avoine", "calories": 190, "sugar_g": 15, "fat_g": 7, "rating": 4.5, "price_eur": 2.30 },
+  { "name": "Avoine Chocolat Noir", "type": "Avoine", "calories": 210, "sugar_g": 16, "fat_g": 9, "rating": 4.6, "price_eur": 2.40 }
 ]

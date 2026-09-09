@@ -1,7 +1,6 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import PlotFigure from '../components/PlotFigure.astro';
-import Menu from '../components/menu.astro';
-import Footer from '../components/footer.astro';
 import GraphNavigation from '../components/GraphNavigation.astro';
 import * as Plot from '@observablehq/plot';
 import penguins from '../data/penguins.json';
@@ -28,13 +27,21 @@ const massBins = species.flatMap((speciesName) => {
 
 const massDistributionOptions = {
 	title: 'Distribution de la masse corporelle',
-	subtitle: 'Répartition des masses par espèce',
-	caption: 'Figure 3. Distribution de la masse corporelle des manchots.',
+	subtitle: 'Répartition des masses par tranches de 250g selon les espèces',
+	caption: 'Figure 3. Histogramme superposé de la distribution de la masse des manchots.',
 	ariaLabel: 'Histogramme de la masse corporelle des manchots par espèce',
 	grid: true,
-	x: { label: 'Masse corporelle (g)' },
-	y: { label: 'Nombre d’individus' },
-	color: { legend: false },
+	width: 760,
+	height: 380,
+	marginLeft: 60,
+	marginBottom: 45,
+	x: { label: 'Masse corporelle (g) →' },
+	y: { label: '↑ Nombre d’individus' },
+	color: {
+		legend: true,
+		domain: ["Adelie", "Chinstrap", "Gentoo"],
+		range: ["#ea580c", "#9333ea", "#0284c7"]
+	},
 	marks: [
 		Plot.rectY(massBins, {
 			x1: 'x1',
@@ -42,29 +49,49 @@ const massDistributionOptions = {
 			y: 'count',
 			fill: 'species',
 			inset: 1,
-			opacity: 0.7
+			opacity: 0.75
 		}),
 		Plot.ruleY([0])
 	]
 };
 ---
 
-<!doctype html>
-<html lang="fr">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>Graphique 3 - Distribution des masses</title>
-	</head>
-	<body id="top" style="max-width: 900px; margin: 2rem auto; font-family: sans-serif;">
-		<Menu />
-		<main>
-			<h1>Graphique 3 : Distribution de la masse corporelle</h1>
-			<figure>
+<Layout title="Graphique 3 - Distribution des masses" activeTab="graphique3">
+	<div class="space-y-8">
+		<!-- En-tête -->
+		<div class="text-center space-y-3">
+			<span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 border border-pink-300 rounded-full text-xs font-bold uppercase tracking-wider">
+				Graphique 3
+			</span>
+			<h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+				Distribution de la <span class="text-pink-600">Masse</span>
+			</h1>
+			<p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+				Histogramme permettant d'observer la dispersion du poids selon les différentes espèces de manchots.
+			</p>
+		</div>
+
+		<!-- Carte du Graphique -->
+		<section class="rounded-3xl border-2 border-pink-200 bg-white/95 p-6 sm:p-8 shadow-sm">
+			<div class="flex items-center justify-between mb-4 pb-3 border-b border-pink-100">
+				<h2 class="text-lg sm:text-xl font-extrabold text-slate-900">
+					Graphique 3 : Histogramme de répartition
+				</h2>
+				<span class="text-xs font-semibold text-slate-500 bg-pink-50 px-2.5 py-1 rounded-full border border-pink-200">
+					Histogram
+				</span>
+			</div>
+
+			<figure class="plot-figure-container flex justify-center items-center overflow-x-auto">
 				<PlotFigure options={massDistributionOptions} />
 			</figure>
+		</section>
+
+		<!-- Navigation entre les 4 graphiques -->
+		<div class="text-center space-y-2">
+			<span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Voir les autres graphiques :</span>
 			<GraphNavigation current={3} />
-		</main>
-		<Footer />
-	</body>
-</html>
+		</div>
+	</div>
+</Layout>
+

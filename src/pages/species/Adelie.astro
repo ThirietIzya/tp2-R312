@@ -1,16 +1,28 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Menu from '../../components/menu.astro';
-import GraphicSpecies from '../../components/GraphicSpecies.astro';
+import Layout from "../../layouts/Layout.astro";
+import GraphicSpecies from "../../components/GraphicSpecies.astro";
+import SpeciesNav from "../../components/SpeciesNav.astro";
 ---
 
-<Layout>
-  <main class="species-shell">
-    <Menu />
+<Layout title="Espèce Adelie - Manchots Palmer" activeTab="adelie">
+  <div class="space-y-6">
+    <!-- En-tête de la page -->
+    <div class="text-center space-y-2">
+      <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 border border-orange-300 rounded-full text-xs font-bold uppercase tracking-wider">
+        Sous-page Espèce
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Les manchots <span class="text-orange-600">Adelie</span>
+      </h1>
+      <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+        Les manchots Adélie (<em>Pygoscelis adeliae</em>) sont les plus communs sur la côte antarctique. Découvrez ci-dessous la relation entre la longueur de leurs nageoires et leur masse corporelle.
+      </p>
+    </div>
 
-    <h1 class="species-title">Les pingouins Adelie</h1>
-    <h2 class="species-subtitle">Graphique de l'espèce : Adelie</h2>
+    <!-- Navigation secondaire entre espèces -->
+    <SpeciesNav current="Adelie" />
 
+    <!-- Graphique réutilisable -->
     <GraphicSpecies species="Adelie" />
-  </main>
+  </div>
 </Layout>

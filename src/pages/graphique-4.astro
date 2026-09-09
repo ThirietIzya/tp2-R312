@@ -1,7 +1,6 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import PlotFigure from '../components/PlotFigure.astro';
-import Menu from '../components/menu.astro';
-import Footer from '../components/footer.astro';
 import GraphNavigation from '../components/GraphNavigation.astro';
 import * as Plot from '@observablehq/plot';
 import penguins from '../data/penguins.json';
@@ -10,42 +9,69 @@ const penguinsWithMass = penguins.filter((penguin) => penguin.body_mass_g !== nu
 
 const bodyMassBySpeciesOptions = {
   title: 'Masse corporelle par espèce',
-  subtitle: 'Comparaison de la médiane et de la dispersion',
-  caption: 'Figure 4. Distribution de la masse corporelle par espèce.',
+  subtitle: 'Comparaison des médianes, quartiles et moyennes',
+  caption: 'Figure 4. Diagramme en boîte (box-plot) et point blanc pour la moyenne.',
   ariaLabel: 'Diagramme en boîte comparant la masse corporelle des espèces de manchots',
-  y: { label: 'Masse corporelle (g)', grid: true },
-  color: { legend: false },
+  width: 760,
+  height: 400,
+  marginLeft: 60,
+  marginBottom: 45,
+  x: { label: "Espèce" },
+  y: { label: '↑ Masse corporelle (g)', grid: true },
+  color: {
+    domain: ["Adelie", "Chinstrap", "Gentoo"],
+    range: ["#ea580c", "#9333ea", "#0284c7"]
+  },
   marks: [
     Plot.boxY(penguinsWithMass, {
       x: 'species',
       y: 'body_mass_g',
       fill: 'species',
-      inset: 12
+      inset: 20
     }),
     Plot.dot(
       penguinsWithMass,
-      Plot.groupX({ y: 'mean' }, { x: 'species', y: 'body_mass_g', fill: 'white', stroke: 'black', r: 4 })
+      Plot.groupX({ y: 'mean' }, { x: 'species', y: 'body_mass_g', fill: 'white', stroke: '#1e293b', strokeWidth: 1.5, r: 5 })
     )
   ]
 };
 ---
 
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Graphique 4 - Masse par espèce</title>
-  </head>
-  <body id="top" style="max-width: 900px; margin: 2rem auto; font-family: sans-serif;">
-    <Menu />
-    <main>
-      <h1>Graphique 4 : Masse corporelle par espèce</h1>
-      <figure>
+<Layout title="Graphique 4 - Masse par espèce" activeTab="graphique4">
+  <div class="space-y-8">
+    <!-- En-tête -->
+    <div class="text-center space-y-3">
+      <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 border border-pink-300 rounded-full text-xs font-bold uppercase tracking-wider">
+        Graphique 4
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Boîtes à Moustaches <span class="text-pink-600">(Box-Plot)</span>
+      </h1>
+      <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+        Visualisation statistique comparant les médianes, étendues interquartiles et moyennes (points blancs) de chaque espèce.
+      </p>
+    </div>
+
+    <!-- Carte du Graphique -->
+    <section class="rounded-3xl border-2 border-pink-200 bg-white/95 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-pink-100">
+        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">
+          Graphique 4 : Comparaison statistique
+        </h2>
+        <span class="text-xs font-semibold text-slate-500 bg-pink-50 px-2.5 py-1 rounded-full border border-pink-200">
+          Box Plot
+        </span>
+      </div>
+
+      <figure class="plot-figure-container flex justify-center items-center overflow-x-auto">
         <PlotFigure options={bodyMassBySpeciesOptions} />
       </figure>
+    </section>
+
+    <!-- Navigation entre les 4 graphiques -->
+    <div class="text-center space-y-2">
+      <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Voir les autres graphiques :</span>
       <GraphNavigation current={4} />
-    </main>
-    <Footer />
-  </body>
-</html>
+    </div>
+  </div>
+</Layout>
