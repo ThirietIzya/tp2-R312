@@ -1,0 +1,173 @@
+---
+import Menu from '../components/menu.astro';
+import GraphicSpecies from '../components/GraphicSpecies.astro';
+import Footer from '../components/footer.astro';
+
+const speciesList = ['Adelie', 'Chinstrap', 'Gentoo'];
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Trie par espèces</title>
+  </head>
+  <body>
+    <main class="species-shell">
+      <Menu />
+
+      <nav class="species-anchor-nav" aria-label="Navigation des espèces">
+        {speciesList.map((name) => (
+          <a href={`#${name.toLowerCase()}`} class="species-anchor-link">{name}</a>
+        ))}
+      </nav>
+
+      <div class="species-slider-wrap" id="species-slider-wrap">
+        <div class="species-slider" id="species-slider">
+          {speciesList.map((name) => (
+            <section id={name.toLowerCase()} class="species-slide">
+              <div class="species-slide__title-wrap">
+                <h1 class="species-title">Les pingouins {name}</h1>
+                <h2 class="species-subtitle">Graphique de l'espèce : {name}</h2>
+              </div>
+              <GraphicSpecies species={name} />
+            </section>
+          ))}
+        </div>
+      </div>
+
+      <Footer />
+    </main>
+
+    <script>
+      const wrapper = document.getElementById('species-slider-wrap');
+      const slider = document.getElementById('species-slider');
+      const slides = Array.from(document.querySelectorAll('.species-slide'));
+      const links = Array.from(document.querySelectorAll('.species-anchor-link'));
+
+      const moveToSlide = (index) => {
+        if (!wrapper || !slider) return;
+        const offset = slides[index]?.offsetLeft ?? 0;
+        wrapper.scrollTo({ left: offset, behavior: 'smooth' });
+      };
+
+      links.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const targetId = link.getAttribute('href');
+          if (!targetId || !targetId.startsWith('#')) return;
+
+          const index = slides.findIndex((slide) => `#${slide.id}` === targetId);
+          if (index >= 0) {
+            event.preventDefault();
+            moveToSlide(index);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: #f3f3f1;
+    color: #111;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+  }
+
+  .species-shell {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+  }
+
+  .species-anchor-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 0 auto 1.5rem;
+    padding: 0.9rem 1rem;
+    background: #f3dfe7;
+    border: 2px solid #ef9bb7;
+    border-radius: 999px;
+  }
+
+  .species-anchor-link {
+    display: inline-flex;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #f8d7e5 0%, #f1bdd3 100%);
+    border: 2px solid #ee9db7;
+    color: #1c1c1c;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .species-title {
+    margin: 0;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+    font-weight: 900;
+  }
+
+  .species-subtitle {
+    margin: 1.2rem 0 1.4rem;
+    font-size: clamp(1.8rem, 2.7vw, 3rem);
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  .species-slider-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    width: 100%;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .species-slider-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .species-slider {
+    display: flex;
+    width: 300%;
+    transition: transform 0.5s ease;
+  }
+
+  .species-slide {
+    width: 100%;
+    min-height: 620px;
+    flex: 0 0 33.333%;
+    scroll-snap-align: start;
+  }
+
+  .species-slide__title-wrap {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .species-shell {
+      padding: 0 0.75rem;
+    }
+
+    .species-anchor-nav {
+      justify-content: flex-start;
+      border-radius: 20px;
+    }
+
+    .species-slide {
+      min-height: 540px;
+    }
+  }
+</style>
