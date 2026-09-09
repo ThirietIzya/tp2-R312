@@ -1,0 +1,35 @@
+---
+// src/components/GraphicSpecies.astro
+
+// 1. Importe tes données (vérifie que le chemin est correct selon ton projet)
+import penguins from '../data/penguins.json';
+
+// 2. On récupère la propriété "species" passée au composant
+const { species } = Astro.props;
+
+// 3. On filtre les pingouins selon l'espèce demandée
+const filteredPenguins = penguins.filter(p => p.species === species);
+---
+
+<div class="my-8">
+  <h2>Graphique de l'espèce : {species}</h2>
+  
+  <!-- Conteneur unique pour le graphique -->
+  <div id={`plot-${species}`}></div>
+</div>
+
+<!-- On passe les données filtrées au script côté client -->
+<script define:vars={{ filteredPenguins, species }}>
+  // IMPORTANT : Mets ici le code d'importation de Plot que tu utilisais au TP1
+  // Exemple : import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+  
+  // Utilise 'filteredPenguins' à la place de tes données globales
+  const chart = Plot.plot({
+    // ... COPIE ICI LES OPTIONS DE TON GRAPHIQUE DU TP1 ...
+    // Exemple (à remplacer par ton code) :
+    // marks: [ Plot.dot(filteredPenguins, { x: "flipper_length_mm", y: "body_mass_g" }) ]
+  });
+
+  // On injecte le graphique dans la div correspondante
+  document.getElementById(`plot-${species}`).append(chart);
+</script>
