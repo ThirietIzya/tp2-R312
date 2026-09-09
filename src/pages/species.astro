@@ -17,12 +17,6 @@ const speciesList = ['Adelie', 'Chinstrap', 'Gentoo'];
     <main class="species-shell">
       <Menu />
 
-      <nav class="species-anchor-nav" aria-label="Navigation des espèces">
-        {speciesList.map((name) => (
-          <a href={`#${name.toLowerCase()}`} class="species-anchor-link">{name}</a>
-        ))}
-      </nav>
-
       <div class="species-slider-wrap" id="species-slider-wrap">
         <div class="species-slider" id="species-slider">
           {speciesList.map((name) => (
@@ -40,31 +34,6 @@ const speciesList = ['Adelie', 'Chinstrap', 'Gentoo'];
       <Footer />
     </main>
 
-    <script>
-      const wrapper = document.getElementById('species-slider-wrap');
-      const slider = document.getElementById('species-slider');
-      const slides = Array.from(document.querySelectorAll('.species-slide'));
-      const links = Array.from(document.querySelectorAll('.species-anchor-link'));
-
-      const moveToSlide = (index) => {
-        if (!wrapper || !slider) return;
-        const offset = slides[index]?.offsetLeft ?? 0;
-        wrapper.scrollTo({ left: offset, behavior: 'smooth' });
-      };
-
-      links.forEach((link) => {
-        link.addEventListener('click', (event) => {
-          const targetId = link.getAttribute('href');
-          if (!targetId || !targetId.startsWith('#')) return;
-
-          const index = slides.findIndex((slide) => `#${slide.id}` === targetId);
-          if (index >= 0) {
-            event.preventDefault();
-            moveToSlide(index);
-          }
-        });
-      });
-    </script>
   </body>
 </html>
 
@@ -84,29 +53,6 @@ const speciesList = ['Adelie', 'Chinstrap', 'Gentoo'];
     max-width: 1200px;
     margin: 0 auto 3rem;
     padding: 0 1rem;
-  }
-
-  .species-anchor-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin: 0 auto 1.5rem;
-    padding: 0.9rem 1rem;
-    background: #f3dfe7;
-    border: 2px solid #ef9bb7;
-    border-radius: 999px;
-  }
-
-  .species-anchor-link {
-    display: inline-flex;
-    padding: 0.55rem 1rem;
-    border-radius: 999px;
-    background: linear-gradient(180deg, #f8d7e5 0%, #f1bdd3 100%);
-    border: 2px solid #ee9db7;
-    color: #1c1c1c;
-    text-decoration: none;
-    font-weight: 700;
   }
 
   .species-title {
