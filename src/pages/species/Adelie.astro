@@ -1,16 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Menu from '../../components/menu.astro';
 import GraphicSpecies from '../../components/GraphicSpecies.astro';
 ---
 
 <Layout>
   <main class="species-shell">
-    <nav class="species-nav" aria-label="Accès rapide">
-      <a href="/">Nuage Manchots</a>
-      <a href="/graphique-2">Répartition Espèces</a>
-      <a href="/graphique">Distribution des masses</a>
-      <a href="/graphique-4">Masse par espèce</a>
-    </nav>
+    <Menu />
 
     <h1 class="species-title">Les pingouins Adelie</h1>
     <h2 class="species-subtitle">Graphique de l'espèce : Adelie</h2>
