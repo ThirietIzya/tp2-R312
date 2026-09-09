@@ -1,17 +1,20 @@
 ---
-// src/pages/species/Adelie.astro
+import Layout from '../../layouts/Layout.astro';
 import GraphicSpecies from '../../components/GraphicSpecies.astro';
 ---
-<html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title>Pingouins Gentoo</title>
-  </head>
-  <body>
-    <h1>Les pingouins Gentoo</h1>
-    
-    <!-- On appelle notre composant en lui passant l'espèce -->
+
+<Layout>
+  <main class="species-shell">
+    <nav class="species-nav" aria-label="Accès rapide">
+      <a href="/">Nuage Manchots</a>
+      <a href="/graphique-2">Répartition Espèces</a>
+      <a href="/graphique">Distribution des masses</a>
+      <a href="/graphique-4">Masse par espèce</a>
+    </nav>
+
+    <h1 class="species-title">Les pingouins Gentoo</h1>
+    <h2 class="species-subtitle">Graphique de l'espèce : Gentoo</h2>
+
     <GraphicSpecies species="Gentoo" />
-    
-  </body>
-</html>
+  </main>
+</Layout>

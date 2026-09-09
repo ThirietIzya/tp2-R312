@@ -1,13 +1,8 @@
 ---
-// src/components/GraphicSpecies.astro
-
-// 1. On importe les données
 import penguins from '../data/penguins.json';
 
-// 2. On récupère l'espèce passée au composant
 const { species } = Astro.props;
 
-// 3. On filtre
 const filteredPenguins = penguins.filter(p => p.species === species);
 ---
 
