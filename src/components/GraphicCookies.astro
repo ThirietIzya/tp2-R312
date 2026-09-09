@@ -1,0 +1,53 @@
+---
+// src/components/GraphicCookies.astro
+
+// 1. Importation des données
+import cookies from '../data/cookies.json';
+---
+
+<div class="my-8 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-4">Statistiques des Cookies 🍪</h2>
+  
+  <!-- On passe les données au script via un attribut de données -->
+  <div 
+    id="plot-cookies" 
+    data-cookies={JSON.stringify(cookies)}
+  ></div>
+</div>
+
+<script>
+  import * as Plot from '@observablehq/plot';
+
+  const container = document.getElementById('plot-cookies');
+
+  if (container) {
+    const cookiesData = JSON.parse(container.dataset.cookies ?? '[]') as Array<Record<string, number | string | null>>;
+
+    const chart = Plot.plot({
+      title: 'Analyse Nutritionnelle des Cookies',
+      subtitle: 'Comparaison des calories par rapport au taux de sucre',
+
+      color: {
+        legend: true,
+        domain: ['Chocolat', 'Fruit', 'Noix'],
+        range: ['#6b4c3a', '#e84a5f', '#d4a373']
+      },
+
+      x: { label: 'Sucre (grammes) →', grid: true },
+      y: { label: '↑ Calories (kcal)', grid: true },
+
+      marks: [
+        Plot.dot(cookiesData, {
+          x: 'sugar_g',
+          y: 'calories',
+          fill: 'type',
+          title: 'name',
+          r: 8,
+          fillOpacity: 0.8
+        })
+      ]
+    });
+
+    container.append(chart);
+  }
+</script>
