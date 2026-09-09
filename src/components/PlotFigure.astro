@@ -1,9 +1,14 @@
 ---
 import * as Plot from "@observablehq/plot";
 import { JSDOM } from "jsdom";
+
 const { options } = Astro.props;
 
-const plot = Plot.plot({ ...options, document: new JSDOM("").window.document });
+// Génération du graphique SVG côté serveur avec JSDOM
+const plot = Plot.plot({
+  ...options,
+  document: new JSDOM("").window.document,
+});
 ---
 
 <div set:html={plot.outerHTML} />

@@ -1,0 +1,48 @@
+---
+const { current } = Astro.props;
+
+const graphLinks = [
+	{ number: 1, label: 'Graphique 1', href: '/#penguins-scatter' },
+	{ number: 2, label: 'Graphique 2', href: '/graphique-2' },
+	{ number: 3, label: 'Graphique 3', href: '/graphique' },
+	{ number: 4, label: 'Graphique 4', href: '/graphique-4' }
+].filter((link) => link.number !== current);
+---
+
+<nav class="graph-navigation" aria-label="Accéder aux autres graphiques">
+	{graphLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+</nav>
+
+<style>
+	.graph-navigation {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 1rem 0 2rem;
+	}
+
+	.graph-navigation a {
+		padding: 0.4rem 0.75rem;
+		border: 2px solid #d94a8c;
+		border-radius: 999px;
+		background: linear-gradient(180deg, #ffb7d0 0%, #f091b8 100%);
+		color: #3a001e;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: transform 0.2s ease, background 0.2s ease;
+	}
+
+	.graph-navigation a:hover,
+	.graph-navigation a:focus-visible {
+		background: linear-gradient(180deg, #f3a9c7 0%, #e76ea2 100%);
+		transform: translateY(-2px);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.graph-navigation a {
+			transition: none;
+		}
+	}
+</style>

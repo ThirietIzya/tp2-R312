@@ -1,0 +1,92 @@
+---
+// src/components/footer.astro
+// Footer : juste le bouton centré
+---
+
+<footer class="kawaii-footer" role="contentinfo">
+  <a href="#top" class="back-to-top" aria-label="Remonter tout en haut de la page"> 
+    <span>Retour au sommet</span>
+    <img src="/image_nuage_footer.png" alt="Nuage" class="bounce-icon" />
+  </a>
+</footer>
+
+<style>
+  :root {
+    --kawaii-pink-accent: #d81b60;
+    --kawaii-text-dark: #3a001e;
+  }
+
+  /* Le conteneur du footer : plus de fond, plus de bordure, juste du centrage */
+  .kawaii-footer {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: center; /* Centre le bouton horizontalement */
+    align-items: center;
+    background: transparent; /* Enlève le fond rose pâle */
+    border: none;            /* Enlève la bordure en pointillés */
+  }
+
+  /* Le bouton */
+  .back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: var(--kawaii-pink-accent);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: system-ui, sans-serif;
+    padding: 0.8rem 1.8rem;
+    border-radius: 999px; /* Forme de pilule */
+    box-shadow: 0 4px 12px rgba(216, 27, 96, 0.3);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+  }
+
+  .bounce-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    object-fit: contain;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .back-to-top:hover {
+    background-color: #ad144b;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(216, 27, 96, 0.4);
+  }
+
+  .back-to-top:active {
+    transform: translateY(0) scale(0.95);
+  }
+
+  /* --- Accessibilité (a11y) --- */
+  .back-to-top:focus-visible {
+    outline: 3px solid var(--kawaii-text-dark);
+    outline-offset: 4px;
+  }
+
+  /* Animation des icônes au survol */
+  .back-to-top:hover .bounce-icon {
+    animation: bounce-up 1s infinite;
+  }
+
+  @keyframes bounce-up {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* Respect des préférences utilisateur (mouvements réduits) */
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top:hover .bounce-icon {
+      animation: none;
+    }
+    .back-to-top {
+      transition: none;
+    }
+    .back-to-top:hover {
+      transform: none;
+    }
+  }
+</style>

@@ -1,0 +1,176 @@
+---
+// src/components/menu.astro
+// Menu de navigation Kawaii & Accessible (a11y)
+---
+
+<nav class="kawaii-nav" aria-label="Navigation rapide vers les graphiques">
+  <div class="nav-container">
+    
+    <div class="nav-brand">
+      <img src="/image_fleur_menu.png" alt="Fleur" class="sparkle" />
+      <span class="brand-title">Accès Rapide</span>
+    </div>
+
+    <ul class="nav-list" role="list">
+      <li>
+        <a href="/#penguins-scatter" class="nav-link">
+          <img src="/image_manchot_menu.png" alt="Manchot" class="nav-icon" />
+          <span>Nuage Manchots</span>
+        </a>
+      </li>
+      <li>
+        <a href="/graphique-2" class="nav-link">
+          <img src="/image_manchot_2_menu.png" alt="Répartition des espèces" class="nav-icon" />
+          <span>Répartition Espèces</span>
+        </a>
+      </li>
+      <li>
+        <a href="/graphique" class="nav-link">
+          <img src="/image_manchot_menu.png" alt="Distribution des masses" class="nav-icon" />
+          <span>Distribution des masses</span>
+        </a>
+      </li>
+      <li>
+        <a href="/graphique-4" class="nav-link">
+          <img src="/image_manchot_2_menu.png" alt="Masse par espèce" class="nav-icon" />
+          <span>Masse par espèce</span>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+
+<style>
+  /* --- Palette Kawaii & Contraste Ultra-Accessible (WCAG AAA) --- */
+  :root {
+    --kawaii-pink-bg: #fff0f5;         /* Fond rose bonbon très doux */
+    --kawaii-pink-border: #f48fb1;     /* Bordure rose pastel */
+    --kawaii-pink-accent: #d81b60;     /* Rose framboise vif pour le focus et accents */
+    --kawaii-text-dark: #3a001e;       /* Prune/Bordeaux très foncé pour contraste élevé (> 10:1) */
+    --kawaii-shadow: 0 6px 18px rgba(216, 27, 96, 0.12);
+  }
+
+  /* --- Structure du Menu --- */
+  .kawaii-nav {
+    background-color: var(--kawaii-pink-bg);
+    border: 3px solid var(--kawaii-pink-border);
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    margin: 1.5rem auto 2.5rem auto;
+    max-width: 800px;
+    box-shadow: var(--kawaii-shadow);
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--kawaii-text-dark);
+    user-select: none;
+  }
+
+  .sparkle {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    display: inline-block;
+    animation: pulse-sparkle 2s infinite ease-in-out;
+  }
+
+  /* --- Liste & Boutons Kawaii --- */
+  .nav-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.65rem;
+    background: linear-gradient(180deg, #ffb7d0 0%, #f091b8 100%);
+    color: var(--kawaii-text-dark);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.78rem;
+    border: 2px solid #d94a8c;
+    border-radius: 999px; /* Boutons pill-shape tout doux */
+    box-shadow: 0 5px 12px rgba(166, 12, 83, 0.20);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+  }
+
+  /* Animation au survol (Effet Rebond Kawaii) */
+  .nav-link:hover {
+    background: linear-gradient(180deg, #f3a9c7 0%, #e76ea2 100%);
+    border-color: #aa145d;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 18px rgba(163, 11, 78, 0.28);
+  }
+
+  .nav-link:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  /* --- ACCESSIBILITÉ (a11y) : Indicateur de Focus Clavier --- */
+  .nav-link:focus-visible {
+    outline: 3px solid var(--kawaii-pink-accent);
+    outline-offset: 3px;
+    background-color: #ffe6f0;
+  }
+
+  .nav-icon {
+    width: 1.45rem;
+    height: 1.45rem;
+    object-fit: contain;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* Animation douce de l'icône */
+  @keyframes pulse-sparkle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2) rotate(12deg); }
+  }
+
+  /* --- ACCESSIBILITÉ (a11y) : Respect des préférences de réduction de mouvement --- */
+  @media (prefers-reduced-motion: reduce) {
+    .sparkle {
+      animation: none;
+    }
+    .nav-link {
+      transition: none;
+    }
+    .nav-link:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .nav-container {
+      justify-content: center;
+    }
+  }
+</style>

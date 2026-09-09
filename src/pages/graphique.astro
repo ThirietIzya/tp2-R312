@@ -1,0 +1,70 @@
+---
+import PlotFigure from '../components/PlotFigure.astro';
+import Menu from '../components/menu.astro';
+import Footer from '../components/footer.astro';
+import GraphNavigation from '../components/GraphNavigation.astro';
+import * as Plot from '@observablehq/plot';
+import penguins from '../data/penguins.json';
+
+const penguinsWithMass = penguins.filter((penguin) => penguin.body_mass_g !== null);
+const species = [...new Set(penguinsWithMass.map((penguin) => penguin.species))];
+const massBins = species.flatMap((speciesName) => {
+	const bins = new Map<number, number>();
+
+	for (const penguin of penguinsWithMass) {
+		if (penguin.species !== speciesName || penguin.body_mass_g === null) continue;
+
+		const binStart = Math.floor(penguin.body_mass_g / 250) * 250;
+		bins.set(binStart, (bins.get(binStart) ?? 0) + 1);
+	}
+
+	return [...bins].map(([binStart, count]) => ({
+		species: speciesName,
+		x1: binStart,
+		x2: binStart + 250,
+		count
+	}));
+});
+
+const massDistributionOptions = {
+	title: 'Distribution de la masse corporelle',
+	subtitle: 'Répartition des masses par espèce',
+	caption: 'Figure 3. Distribution de la masse corporelle des manchots.',
+	ariaLabel: 'Histogramme de la masse corporelle des manchots par espèce',
+	grid: true,
+	x: { label: 'Masse corporelle (g)' },
+	y: { label: 'Nombre d’individus' },
+	color: { legend: false },
+	marks: [
+		Plot.rectY(massBins, {
+			x1: 'x1',
+			x2: 'x2',
+			y: 'count',
+			fill: 'species',
+			inset: 1,
+			opacity: 0.7
+		}),
+		Plot.ruleY([0])
+	]
+};
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Graphique 3 - Distribution des masses</title>
+	</head>
+	<body id="top" style="max-width: 900px; margin: 2rem auto; font-family: sans-serif;">
+		<Menu />
+		<main>
+			<h1>Graphique 3 : Distribution de la masse corporelle</h1>
+			<figure>
+				<PlotFigure options={massDistributionOptions} />
+			</figure>
+			<GraphNavigation current={3} />
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,37 @@
+---
+import PlotFigure from '../components/PlotFigure.astro';
+import Menu from '../components/menu.astro';
+import Footer from '../components/footer.astro';
+import GraphNavigation from '../components/GraphNavigation.astro';
+import * as Plot from '@observablehq/plot';
+import penguins from '../data/penguins.json';
+
+const secondChartOptions = {
+	title: "Nombre d'individus par espèce",
+	caption: 'Figure 2. Effectif représenté par un diagramme en barres.',
+	ariaLabel: 'Diagramme en barres montrant le nombre de manchots par espèce',
+	marks: [
+		Plot.barX(penguins, Plot.groupY({ x: 'count' }, { y: 'species', fill: 'species' }))
+	]
+};
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Graphique 2 - Effectif par espèce</title>
+	</head>
+	<body id="top" style="max-width: 900px; margin: 2rem auto; font-family: sans-serif;">
+		<Menu />
+		<main>
+			<h1>Graphique 2 : Effectif par espèce</h1>
+			<figure>
+				<PlotFigure options={secondChartOptions} />
+			</figure>
+			<GraphNavigation current={2} />
+		</main>
+		<Footer />
+	</body>
+</html>
