@@ -1,7 +1,7 @@
-- URL site WEB :
+- URL site WEB :tp2r312izyathiriet.netlify.app
 - URL Notebook Observable :
-- Nom :
-- Prénom :
+- Nom :Thiriet
+- Prénom :Izya
 - Nom binome :
 - Prénom binome :
 
